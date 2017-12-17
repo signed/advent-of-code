@@ -1071,9 +1071,16 @@ spec =
     it "challenge" $ do
        let jumps = toIntList $ lines challenge
        stepsToExit jumps `shouldBe` 372671
+    it "challenge part two" $ do
+       let jumps = toIntList $ lines challenge
+       pendingWith "runs too long"
+       stepsToExitPartTwo jumps `shouldBe` 25608480
     it "acceptance" $ do
        let jumps = [0, 3, 0, 1, -3]
        stepsToExit jumps `shouldBe` 5
+    it "acceptance part two" $ do
+       let jumps = [0, 3, 0, 1, -3]
+       stepsToExitPartTwo jumps `shouldBe` 10
     it "one jump command" $ do
        let jumps = [1]
        stepsToExit jumps `shouldBe` 1
