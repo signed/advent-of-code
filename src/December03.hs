@@ -18,7 +18,6 @@ spiralRing k  =  jup 1 candidates where
 
 hmm :: Int -> Int -> Coordinates
 hmm ring total
---  | True = D2 yStart missing
   | missing < rightMax  = D2 xStart (yStart + missing -1)
   | missing <= topMax   = D2 (halfEdgeLength - (missing - rightMax)) halfEdgeLength
   | missing <= leftMax  = D2 (-halfEdgeLength) (halfEdgeLength - (missing - topMax))
