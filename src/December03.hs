@@ -1,7 +1,5 @@
 module December03 where
 
-import Debug.Trace
-
 data Coordinates = D2 Int Int deriving (Eq, Show)
 edgeLength :: Int -> Int
 edgeLength x = x * 2 +1
@@ -16,7 +14,7 @@ spiralRing 1 = 0
 spiralRing k  =  jup 1 candidates where
                   candidates = [n * 2 + 1 | n <- [0..]]
                   jup :: Int -> [Int] -> Int
-                  jup ring (x : y : xs) =  if trace ("power "++show (y*y)) y*y >= k then ring else jup (ring + 1) (y:xs)
+                  jup ring (x : y : xs) =  if y*y >= k then ring else jup (ring + 1) (y:xs)
 
 hmm :: Int -> Int -> Coordinates
 hmm ring total
@@ -24,7 +22,7 @@ hmm ring total
   | missing < rightMax  = D2 xStart (yStart + missing -1)
   | missing <= topMax   = D2 (halfEdgeLength - (missing - rightMax)) halfEdgeLength
   | missing <= leftMax  = D2 (-halfEdgeLength) (halfEdgeLength - (missing - topMax))
-  | otherwise           = trace ("h "++ show (missing,rightMax,topMax, leftMax)) D2 (-halfEdgeLength + (missing - leftMax)) (-halfEdgeLength)
+  | otherwise           = D2 (-halfEdgeLength + (missing - leftMax)) (-halfEdgeLength)
   where
          edgeLengthI = ring  * 2 + 1
          consumedOnEachSide = edgeLengthI - 1
