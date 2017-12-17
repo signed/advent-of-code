@@ -12,8 +12,12 @@ spec :: Spec
 spec =
   describe "redistribute" $ do
     it "challenge" $
-       -- 269 too low
        redistributionCycleTillAlreadySeenConfiguration (memoryBanks challenge) `shouldBe` 3156
+    it "challenge part two" $
+       cyclesBetweenRepetitions (memoryBanks challenge) `shouldBe` 1610
     it "acceptance" $ do
        let banks = memoryBanks[0, 2, 7, 0]
        redistributionCycleTillAlreadySeenConfiguration banks `shouldBe` 5
+    it "acceptance part two" $ do
+       let banks = memoryBanks[0, 2, 7, 0]
+       cyclesBetweenRepetitions banks `shouldBe` 4

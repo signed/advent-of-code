@@ -9,15 +9,20 @@ newtype MemoryBank = MemoryBank { blocks:: Int} deriving (Show, Eq, Ord)
 increment :: MemoryBank -> MemoryBank
 increment (MemoryBank x) = MemoryBank (x + 1)
 
+cyclesBetweenRepetitions :: [MemoryBank] -> Int
+cyclesBetweenRepetitions memoryBank =
+ let configurations = [ memoryBank ]
+ in snd $ redistribution configurations 1 memoryBank
+
 redistributionCycleTillAlreadySeenConfiguration :: [MemoryBank] -> Int
 redistributionCycleTillAlreadySeenConfiguration memoryBank =
  let configurations = [ memoryBank ]
- in redistribution configurations 1 memoryBank
+ in fst $ redistribution configurations 1 memoryBank
 
 
-redistribution :: [[MemoryBank]] -> Int -> [MemoryBank] -> Int
+redistribution :: [[MemoryBank]] -> Int -> [MemoryBank] -> (Int,Int)
 redistribution configurations cycleCount memoryBanks
-  | newBank `elem` configurations = cycleCount
+  | newBank `elem` configurations = (cycleCount, cycleCount - fromJust(elemIndex newBank configurations))
   | otherwise                     = redistribution newConfigurations (cycleCount + 1) newBank
   where newBank = redistribute memoryBanks $ maximumWithIndex memoryBanks
         newConfigurations = configurations ++ [newBank]
