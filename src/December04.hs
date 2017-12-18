@@ -2,11 +2,31 @@ module December04 where
 import Data.List(group, sort)
 
 validPassPhraseCount :: [String] -> Int
-validPassPhraseCount x = length $ filter validPassPhrase x
+validPassPhraseCount x = length $ filter ( validPassPhrase [noDuplicateWords] ) x
 
-validPassPhrase :: String -> Bool
-validPassPhrase x = null clustersWithSizeGreaterOne  where
-  groupedWords = group $ sort $  words x
+validPassPhraseCountTaskTwo :: [String] -> Int
+validPassPhraseCountTaskTwo x = length $ filter (validPassPhrase [noDuplicateWords, noAnagramsOfAnyWord]) x
+
+validPassPhrase :: [[String] -> Bool] -> String ->  Bool
+validPassPhrase predicates passPhrase = foldr (&&) True  (map (\f -> f split) predicates)
+ where split = words passPhrase
+
+noDuplicateWords :: [String] -> Bool
+noDuplicateWords words = null clustersWithSizeGreaterOne  where
+  groupedWords = group $ sort words
   groupSizes = map length groupedWords
   clustersWithSizeGreaterOne = filter sameWordMoreThanOnce groupSizes
   sameWordMoreThanOnce x = x > 1
+
+noAnagramsOfAnyWord :: [String] -> Bool
+noAnagramsOfAnyWord words = not (True `elem` booleans)
+ where booleans = map hmm words
+       hmm word = reverse word `elem` words `without` word
+
+without :: Eq a => [a] -> a -> [a]
+without xs x = filter (x /=) xs
+
+withoutElementAt :: Int -> [a] -> (a, [a])
+withoutElementAt index list =
+ let (front, toRemove:end) = splitAt index list
+ in (toRemove, front ++ end)

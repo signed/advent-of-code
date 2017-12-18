@@ -519,13 +519,21 @@ challenge = "yot babgr babgr kqtu kqtu kzshonp ylyk psqk\n\
 
 spec :: Spec
 spec = do
-  describe "count valid pass phrases" $
+  describe "count valid pass phrases" $ do
     it "challenge" $ do
        let passPhrases = lines challenge
        validPassPhraseCount passPhrases `shouldBe` 325
+    it "challenge task two" $ do
+       let passPhrases = lines challenge
+       validPassPhraseCountTaskTwo passPhrases `shouldBe` 302
 
   describe "valid passphrase" $ do
     it "duplicate word invalid" $
-       validPassPhrase "aa bb cc dd aa" `shouldBe` False
+       validPassPhrase [noDuplicateWords] "aa bb cc dd aa" `shouldBe` False
     it "no duplicates" $
-       validPassPhrase "aa bb cc dd aaa" `shouldBe` True
+       validPassPhrase [noDuplicateWords] "aa bb cc dd aaa" `shouldBe` True
+  describe "palindroms in passphrase are invalid" $ do
+    it "anagram word invalid" $
+       validPassPhrase [noAnagramsOfAnyWord] "abc kk cba" `shouldBe` False
+    it "no anagram" $
+       validPassPhrase [noAnagramsOfAnyWord] "aa bb cc dd" `shouldBe` True
