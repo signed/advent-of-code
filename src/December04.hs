@@ -1,25 +1,27 @@
 module December04 where
 import Data.List(group, sort)
 
+type PassPhraseTester = [String] -> Bool
+
 validPassPhraseCount :: [String] -> Int
 validPassPhraseCount x = length $ filter ( validPassPhrase [noDuplicateWords] ) x
 
 validPassPhraseCountTaskTwo :: [String] -> Int
 validPassPhraseCountTaskTwo x = length $ filter (validPassPhrase [noDuplicateWords, noAnagramsOfAnyWord]) x
 
-validPassPhrase :: [[String] -> Bool] -> String ->  Bool
-validPassPhrase predicates passPhrase = foldr (&&) True  (map (\f -> f split) predicates)
+validPassPhrase :: [PassPhraseTester] -> String ->  Bool
+validPassPhrase predicates passPhrase = all (\ f -> f split) predicates
  where split = words passPhrase
 
-noDuplicateWords :: [String] -> Bool
+noDuplicateWords :: PassPhraseTester
 noDuplicateWords words = null clustersWithSizeGreaterOne  where
   groupedWords = group $ sort words
   groupSizes = map length groupedWords
   clustersWithSizeGreaterOne = filter sameWordMoreThanOnce groupSizes
   sameWordMoreThanOnce x = x > 1
 
-noAnagramsOfAnyWord :: [String] -> Bool
-noAnagramsOfAnyWord words = not (True `elem` booleans)
+noAnagramsOfAnyWord :: PassPhraseTester
+noAnagramsOfAnyWord words = True `notElem` booleans
  where booleans = map hmm words
        hmm word = reverse word `elem` words `without` word
 
