@@ -525,7 +525,22 @@ spec = do
        validPassPhraseCount passPhrases `shouldBe` 325
     it "challenge task two" $ do
        let passPhrases = lines challenge
-       validPassPhraseCountTaskTwo passPhrases `shouldBe` 302
+       validPassPhraseCountTaskTwo passPhrases `shouldBe` 119
+    it "acceptance 1" $ do
+       let passPhrases = ["abcde fghij"]
+       validPassPhraseCountTaskTwo passPhrases `shouldBe` 1
+    it "acceptance 3" $ do
+       let passPhrases = ["a ab abc abd abf abj"]
+       validPassPhraseCountTaskTwo passPhrases `shouldBe` 1
+    it "acceptance 4" $ do
+       let passPhrases = ["iiii oiii ooii oooi oooo"]
+       validPassPhraseCountTaskTwo passPhrases `shouldBe` 1
+    it "acceptance 2" $ do
+       let passPhrases = ["abcde xyz ecdab"]
+       validPassPhraseCountTaskTwo passPhrases `shouldBe` 0
+    it "acceptance 5" $ do
+       let passPhrases = ["oiii ioii iioi iiio"]
+       validPassPhraseCountTaskTwo passPhrases `shouldBe` 0
 
   describe "valid passphrase" $ do
     it "duplicate word invalid" $

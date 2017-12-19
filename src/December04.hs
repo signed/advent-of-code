@@ -23,7 +23,9 @@ noDuplicateWords words = null clustersWithSizeGreaterOne  where
 noAnagramsOfAnyWord :: PassPhraseTester
 noAnagramsOfAnyWord words = True `notElem` booleans
  where booleans = map hmm words
-       hmm word = reverse word `elem` words `without` word
+       hmm word = sort word `elem` anagrammed
+        where withoutTheWord = words `without` word
+              anagrammed = map sort withoutTheWord;
 
 without :: Eq a => [a] -> a -> [a]
 without xs x = filter (x /=) xs
